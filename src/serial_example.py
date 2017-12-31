@@ -40,8 +40,8 @@ def send_time(ser):
 
 def run(ser):
     imgs = []
-    imgs.append(cv2.imread("/home/padeler/Desktop/frog.png"))
-    imgs.append(cv2.imread("/home/padeler/Desktop/mario.jpg"))
+    imgs.append(cv2.imread("res/frog.png"))
+    imgs.append(cv2.imread("res/mario.jpg"))
 
     test = np.zeros((16,16,3), dtype=np.ubyte)
     test[:, :] = [0,20,0]
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     time.sleep(1)
     # read(ser)
     # send_settings(ser, 20)
-    # run(ser)
+    run(ser)
 
     time.sleep(1)
     read(ser)

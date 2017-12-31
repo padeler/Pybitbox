@@ -7,15 +7,15 @@ import numpy as np
 import PIL
 
 def run():
-    out_file = "font.h"
+    out_file = "generated/font.h"
     char_range = list(range(32,127))
     # char_range = list(range(48,51))
     char_width = 5
     char_height = 10
 
     image = Image.new("1", (char_width*len(char_range), char_height), 0)
-    # font_path = "/home/padeler/Desktop/compact_[allfont.net].ttf"
     font_path = "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf"
+    # font_path = "res/SFCompactDisplay-Regular.otf"
     usr_font = ImageFont.truetype(font_path, 9)
     d_usr = ImageDraw.Draw(image)
 
@@ -24,7 +24,7 @@ def run():
 
     d_usr = d_usr.text((0, 0), ascii, 255, font=usr_font)
 
-    image.save("test.png")
+    image.save("generated/test.png")
     cols, rows = image.size
     fnt = np.array(list(image.getdata(0)), dtype=np.ubyte).reshape(rows, cols)
     fnt_tr = np.zeros((char_height*len(char_range), char_width), dtype=np.ubyte)
@@ -34,7 +34,7 @@ def run():
         fnt_tr[idx*char_height:(idx+1)*char_height, :] = fnt[:,idx*char_width:(idx+1)*char_width]
 
     # print fnt[:, 16*5:19*5]
-    v = ord(':') - 32;
+    v = ord('0') - 32;
     print fnt_tr[v*char_height:(v+3)*char_height,:]
 
     fnt_packed = np.packbits(fnt_tr, axis=1).ravel()
