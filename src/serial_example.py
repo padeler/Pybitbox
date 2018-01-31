@@ -44,12 +44,12 @@ def run(ser):
     imgs.append(cv2.imread("res/mario.jpg"))
 
     test = np.zeros((16,16,3), dtype=np.ubyte)
-    test[:, :] = [0,20,0]
+    test[:, :] = [200,200,200]
 
     imgs.append(test)
     frames = itertools.cycle(imgs)
     k=0
-    sleep_time = 100
+    sleep_time = 0
     for f in frames:
 
         bf = cv2.resize(f, (160, 160), interpolation=cv2.INTER_NEAREST)
