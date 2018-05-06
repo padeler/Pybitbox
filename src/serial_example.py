@@ -16,40 +16,55 @@ def send_image(ser, bgr):
 
 
 
-def send_settings(ser, brightness):
+def send_settings(ser, clock_mode=0 , brightness=20):
 
-    set = "B%3d"%brightness
+    set = " %d %d" % (clock_mode, brightness)
     ser.write(bytearray([1, 1]))
-    ser.write(set)
-    padding = [0] * (16*3-len(set))
-    ser.write(padding)
 
-    print "Sent: "+set
-    # print "Responce: ", ser.readline()
+    print "SENDING: [%s]"%set
+    ser.write(set)
+    print "Responce: ", ser.readline()
 
 def send_time(ser):
 
-    dt = str(long(time.time()) - time.timezone)
+    dt = str(long(time.time()) - time.timezone + time.daylight*3600)
     ser.write(bytearray([2, 1]))
     ser.write(dt)
     padding = [0] * (16*3-len(dt))
     ser.write(padding)
     ser.flush()
     print "Time Sent: "+dt
-    # print "Responce: ", ser.readline()
+    print "Responce: ", ser.readline()
 
 def run(ser):
     imgs = []
-    imgs.append(cv2.imread("res/frog.png"))
-    imgs.append(cv2.imread("res/mario.jpg"))
+    # mario = cv2.imread("res/mario.jpg")
+    # imgs.append(cv2.imread("res/frog.png"))
+    # imgs.append(mario)
+    # test = np.zeros((16,16,3), dtype=np.ubyte)
+    # test[:, :] = [200,200,200]
+    # imgs.append(test)
 
-    test = np.zeros((16,16,3), dtype=np.ubyte)
-    test[:, :] = [200,200,200]
+    image_filenames = [
+        "/home/padeler/work/PixelFrame/art/heart-Pixel-Chest/heart/0.bmp",
+        "/home/padeler/work/PixelFrame/art/heart-Pixel-Chest/heart/1.bmp",
+        "/home/padeler/work/PixelFrame/art/heart-Pixel-Chest/heart/2.bmp",
+        # "/home/padeler/work/PixelFrame/art/heart-Pixel-Chest/heart/3.bmp",
+        # "/home/padeler/work/PixelFrame/art/heart-Pixel-Chest/heart/4.bmp",
+        # "/home/padeler/work/PixelFrame/art/heart-Pixel-Chest/heart/5.bmp",
+        # "/home/padeler/work/PixelFrame/art/heart-Pixel-Chest/heart/6.bmp",
+        # "/home/padeler/work/PixelFrame/art/heart-Pixel-Chest/heart/7.bmp",
+        # "/home/padeler/work/PixelFrame/art/heart-Pixel-Chest/heart/8.bmp",
+        # "/home/padeler/work/RibbaPi/resources/animations/art/speeder/speeder/0.bmp",
+        # "/home/padeler/work/RibbaPi/resources/animations/art/speeder/speeder/1.bmp",
+        # "/home/padeler/work/RibbaPi/resources/animations/art/speeder/speeder/2.bmp",
+        ]
+    for i in image_filenames:
+        imgs.append(cv2.imread(i))
 
-    imgs.append(test)
     frames = itertools.cycle(imgs)
     k=0
-    sleep_time = 0
+    sleep_time = 100
     for f in frames:
 
         bf = cv2.resize(f, (160, 160), interpolation=cv2.INTER_NEAREST)
@@ -84,15 +99,15 @@ def test(ser):
 
 
 if __name__ == '__main__':
-    ser = serial.Serial("/dev/ttyUSB0", 115200, dsrdtr=True)
-    # ser = serial.Serial("/dev/ttyUSB0", 500000)
+    # ser = serial.Serial("/dev/ttyUSB0", 115200, dsrdtr=True)
+    ser = serial.Serial("/dev/ttyUSB0", 115200)
     time.sleep(2)
     # print ser
-    send_time(ser)
+    # send_time(ser)
     # test(ser)
     time.sleep(1)
     # read(ser)
-    # send_settings(ser, 20)
+    # send_settings(ser, 2, 30)
     run(ser)
 
     time.sleep(1)

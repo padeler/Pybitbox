@@ -15,6 +15,7 @@ def run():
 
     image = Image.new("1", (char_width*len(char_range), char_height), 0)
     font_path = "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf"
+    # font_path = "/usr/share/fonts/truetype/tlwg/TlwgMono.ttf"
     # font_path = "res/SFCompactDisplay-Regular.otf"
     usr_font = ImageFont.truetype(font_path, 9)
     d_usr = ImageDraw.Draw(image)
@@ -35,7 +36,7 @@ def run():
 
     # print fnt[:, 16*5:19*5]
     v = ord('0') - 32;
-    print fnt_tr[v*char_height:(v+3)*char_height,:]
+    print fnt_tr[v*char_height:(v+7)*char_height,:]
 
     fnt_packed = np.packbits(fnt_tr, axis=1).ravel()
     print fnt_packed.shape, fnt_tr.shape
@@ -52,10 +53,10 @@ def run():
 
     with open(out_file, "w") as f:
         f.write(header)
-        f.write("const uint8_t char_height = %d;\n"% char_height)
-        f.write("const uint8_t char_width = %d;\n" % char_width)
-        f.write("const uint8_t ascii_first = %d;\n" % char_range[0])
-        f.write("const uint8_t charset_size = %d;\n" % len(char_range))
+        f.write("#define char_height %d\n"% char_height)
+        f.write("#define char_width %d\n" % char_width)
+        f.write("#define ascii_first %d\n" % char_range[0])
+        f.write("#define charset_size %d\n" % len(char_range))
 
         f.write("\nconst byte charset[] PROGMEM = { \n")
         for r_idx,v in enumerate(list(fnt_packed)):
