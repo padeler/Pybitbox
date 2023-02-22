@@ -9,7 +9,7 @@ import datetime
 
 
 def read(ser):
-    print(str(ser.read(ser.in_waiting)))
+    print((str(ser.read(ser.in_waiting))))
 
 
 def send_image(ser, bgr):
@@ -23,21 +23,21 @@ def send_settings(ser, clock_mode=0, brightness=20):
     set = " %d %d" % (clock_mode, brightness)
     ser.write(bytearray([1, 1]))
 
-    print("SENDING: [%s]" % set)
+    print(("SENDING: [%s]" % set))
     ser.write(set)
-    print("Responce: ", ser.readline())
+    print(("Responce: ", ser.readline()))
 
 
 def send_time(ser):
 
-    dt = str(int(time.time()) - time.timezone + time.daylight * 3600)
+    dt = str(int(time.time()) - time.timezone) # + time.daylight * 3600)
     ser.write(bytearray([2, 1]))
     ser.write(bytearray(dt, "ascii"))
     padding = [0] * (16 * 3 - len(dt))
     ser.write(padding)
     ser.flush()
-    print("Time Sent: " + dt)
-    print("Responce: ", ser.readline())
+    print(("Time Sent: " + dt))
+    print(("Responce: ", ser.readline()))
 
 
 def run(ser):
@@ -86,7 +86,7 @@ def run(ser):
             break
 
         dt = time.time() - t
-        print("DT: ", dt)
+        print(("DT: ", dt))
         # time.sleep(max(0, 1.0-dt))
 
     time.sleep(2)

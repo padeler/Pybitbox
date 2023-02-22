@@ -21,7 +21,7 @@ def run():
     d_usr = ImageDraw.Draw(image)
 
     ascii = "".join([chr(v) for v in char_range])
-    print ascii
+    print(ascii)
 
     d_usr = d_usr.text((0, 0), ascii, 255, font=usr_font)
 
@@ -36,10 +36,10 @@ def run():
 
     # print fnt[:, 16*5:19*5]
     v = ord('0') - 32;
-    print fnt_tr[v*char_height:(v+7)*char_height,:]
+    print(fnt_tr[v*char_height:(v+7)*char_height,:])
 
     fnt_packed = np.packbits(fnt_tr, axis=1).ravel()
-    print fnt_packed.shape, fnt_tr.shape
+    print(fnt_packed.shape, fnt_tr.shape)
 
 
     header = "/* \n" \

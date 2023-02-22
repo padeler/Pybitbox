@@ -103,3 +103,5 @@ ENV/
 res/*
 .idea
 generated
+.vscode
+pyenv
