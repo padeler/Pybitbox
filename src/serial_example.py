@@ -1,9 +1,9 @@
 import serial
 
-# import numpy as np
+import numpy as np
 import time
 
-# import cv2
+import cv2
 import itertools
 import datetime
 
@@ -30,7 +30,7 @@ def send_settings(ser, clock_mode=0, brightness=20):
 
 def send_time(ser):
 
-    dt = str(int(time.time()) - time.timezone) # + time.daylight * 3600)
+    dt = str(int(time.time()) - time.timezone)# + time.daylight * 3600)
     ser.write(bytearray([2, 1]))
     ser.write(bytearray(dt, "ascii"))
     padding = [0] * (16 * 3 - len(dt))
@@ -42,10 +42,10 @@ def send_time(ser):
 
 def run(ser):
     imgs = []
-    # img = cv2.imread("res/mario.jpg")
-    # img = cv2.imread("res/minnie2.png")
-    # img = cv2.imread("res/mickey.png")ls
-    # imgs.append(cv2.imread("res/frog.png"))
+    img = cv2.imread("res/mario.jpg")
+    img = cv2.imread("res/minnie2.png")
+    img = cv2.imread("res/mickey.png")
+    imgs.append(cv2.imread("res/frog.png"))
     imgs.append(img)
     # test = np.zeros((16,16,3), dtype=np.ubyte)
     # test[:, :] = [200,200,200]
@@ -70,7 +70,7 @@ def run(ser):
 
     frames = itertools.cycle(imgs)
     k = 0
-    sleep_time = 50
+    sleep_time = 1000
     for f in frames:
 
         bf = cv2.resize(f, (160, 160), interpolation=cv2.INTER_NEAREST)
@@ -112,11 +112,11 @@ if __name__ == "__main__":
     print(ser)
     send_time(ser)
     # test(ser)
-    time.sleep(1)
+    time.sleep(2)
     # read(ser)
     # send_settings(ser, 2, 30)
     # run(ser)
 
-    time.sleep(1)
+    # time.sleep(1)
     read(ser)
     ser.close()
